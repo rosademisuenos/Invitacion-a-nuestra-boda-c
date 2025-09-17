@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Boda de Rosa Isela y Demian</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Noto Serif SC', sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+            color: #5a2e36;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d94f70" opacity="0.05" d="M30,10 Q50,0 70,10 T90,30 Q100,50 90,70 T70,90 Q50,100 30,90 T10,70 Q0,50 10,30 T30,10 Z"/></svg>');
+            background-size: 150px;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Sobre animado estilo chino */
+        .envelope-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            z-index: 100;
+            background: rgba(255, 245, 240, 0.95);
+            cursor: pointer;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 500px;
+            height: 300px;
+            max-width: 90vw;
+            max-height: 60vh;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .envelope.open {
+            transform: translateY(-100px) rotateX(180deg);
+        }
+
+        .envelope-front,
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 2px solid #d94f70;
+        }
+
+        /* Diseño del sobre estilo chino */
+        .envelope-front {
+            background: linear-gradient(45deg, #d94f70, #b73a5a);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            transform-origin: bottom;
+            z-index: 2;
+        }
+
+        /* Solapa del sobre */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(45deg, #c93959, #a82a49);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out;
+            z-index: 3;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-top: 2px solid #d94f70;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        /* Detalle del sello chino */
+        .envelope-seal {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: #ffd700;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4;
+            transition: all 0.8s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 2px solid #d94f70;
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #d94f70;
+        }
+
+        .envelope.open .envelope-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+
+        .envelope-back {
+            background: linear-gradient(45deg, #fff5f5, #fff0f0);
+            transform: rotateX(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .double-happiness {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3.5rem;
+            color: #d94f70;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .invitation-title {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: #ffd700;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .invitation-subtitle {
+            color: #ffd700;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .invitation-content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .invitation-content.show {
+            display: block;
+        }
+
+        .chinese-pattern {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23d94f70" opacity="0.1" d="M50,10 L60,30 L80,30 L65,45 L75,65 L50,55 L25,65 L35,45 L20,30 L40,30 Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        .pattern-1 {
+            top: 10%;
+            left: 5%;
+            transform: rotate(15deg);
+        }
+
+        .pattern-2 {
+            top: 5%;
+            right: 10%;
+            transform: rotate(-10deg);
+        }
+
+        .pattern-3 {
+            bottom: 10%;
+            left: 8%;
+            transform: rotate(-20deg);
+        }
+
+        .pattern-4 {
+            bottom: 5%;
+            right: 7%;
+            transform: rotate(25deg);
+        }
+
+        .couple-names {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 4.5rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin-bottom: 10px;
+            text-align: center;
+            margin-top: 40px;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .couple-names::before,
+        .couple-names::after {
+            content: '囍';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+
+        .couple-names::before {
+            left: -50px;
+        }
+
+        .couple-names::after {
+            right: -50px;
+        }
+
+        .wedding-date {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #b73a5a;
+            margin-bottom: 40px;
+            text-align: center;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .parents-section {
+            text-align: center;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid #d94f70;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parents-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #d94f70, #ffd700, #d94f70);
+        }
+
+        .parents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .parent-group {
+            padding: 15px;
+            border-radius: 10px;
+            background: #fff9f9;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f8d7da;
+            position: relative;
+        }
+
+        .parent-group::after {
+            content: '福';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 2rem;
+            color: rgba(217, 79, 112, 0.1);
+        }
+
+        .parent-title {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            color: #d94f70;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .countdown {
+            background: linear-gradient(45deg, #d94f70, #b73a5a);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            display: flex;
+            justify-content: space-around;
+            max-width: 900px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #d94f70, #ffd700);
+        }
+
+        .countdown-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .countdown-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .countdown-item:last-child::after {
+            display: none;
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 600;
+            font-family: 'Noto Serif SC', serif;
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            color: white;
+            font-weight: 500;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid #d94f70;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #d94f70, #ffd700, #d94f70);
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(45deg, #d94f70, #ffd700);
+            border-radius: 3px;
+        }
+
+        .locations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .location-card {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #d94f70;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-card::after {
+            content: '喜';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 6rem;
+            color: rgba(217, 79, 112, 0.05);
+            z-index: 0;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8d7da;
+            border: 1px solid #d94f70;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .location-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .location-type {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-details {
+            margin-bottom: 25px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-details p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            color: #5a2e36;
+            font-weight: 500;
+        }
+
+        .location-time {
+            font-weight: 600;
+            color: #d94f70;
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: block;
+            margin: 20px auto 0;
+            background: linear-gradient(45deg, #d94f70, #b73a5a);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(217, 79, 112, 0.3);
+            text-decoration: none;
+            width: 200px;
+            border: 1px solid #ffd700;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #b73a5a, #d94f70);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(217, 79, 112, 0.4);
+            color: #ffd700;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .itinerary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .event-card {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid #d94f70;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .event-card::after {
+            content: '樂';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 1.5rem;
+            color: rgba(217, 79, 112, 0.1);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-time {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #d94f70;
+            margin-bottom: 10px;
+        }
+
+        .event-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #5a2e36;
+        }
+
+        .gift-section {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .gift-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #5a2e36;
+            font-weight: 500;
+        }
+
+        .gift-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .gift-card {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #d94f70;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .gift-card::after {
+            content: '禮';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 3rem;
+            color: rgba(217, 79, 112, 0.05);
+        }
+
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8d7da;
+            border: 1px solid #d94f70;
+        }
+
+        .gift-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gift-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .gift-type {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin-bottom: 20px;
+        }
+
+        .gift-details p {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            color: #5a2e36;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: #d94f70;
+            font-size: 1.3rem;
+            display: block;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .dress-code {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dress-title {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin-bottom: 20px;
+        }
+
+        .dress-rules {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .dress-rule {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid #d94f70;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .dress-rule:hover {
+            transform: translateY(-5px);
+        }
+
+        .dress-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8d7da;
+            position: relative;
+            border: 2px solid #d94f70;
+        }
+
+        .dress-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prohibited {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(217, 79, 112, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .prohibited i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .gallery-section {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .gallery-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .gallery-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            color: #5a2e36;
+            font-weight: 500;
+        }
+
+        .hashtag {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin: 30px 0;
+            padding: 15px 30px;
+            background: #fff9f9;
+            border-radius: 50px;
+            display: inline-block;
+            border: 2px solid #d94f70;
+            letter-spacing: 1px;
+        }
+
+        .gallery-btn {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .dots-app {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #d94f70;
+            position: relative;
+        }
+
+        .dots-app::after {
+            content: '照';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 3rem;
+            color: rgba(217, 79, 112, 0.05);
+        }
+
+        .app-title {
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #d94f70;
+            margin-bottom: 20px;
+        }
+
+        .app-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .app-image {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #d94f70;
+        }
+
+        .app-image img {
+            width: 100%;
+            display: block;
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .app-description {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #5a2e36;
+            line-height: 1.6;
+        }
+
+        .event-code {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d94f70;
+            background: #fff0f0;
+            padding: 15px 30px;
+            border-radius: 10px;
+            display: inline-block;
+            letter-spacing: 2px;
+            border: 1px solid #d94f70;
+        }
+
+        .gallery-preview {
+            margin: 25px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 3px solid #d94f70;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-preview img {
+            width: 100%;
+            display: block;
+        }
+
+        .rsvp-section {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .rsvp-container {
+            background: #fff9f9;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid #d94f70;
+            position: relative;
+        }
+
+        .rsvp-container::after {
+            content: '邀';
+            font-family: 'Noto Serif SC', serif;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 4rem;
+            color: rgba(217, 79, 112, 0.05);
+        }
+
+        .rsvp-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            color: #5a2e36;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            font-weight: 500;
+        }
+
+        .accompaniment-note {
+            background: #fff0f0;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 30px auto;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-style: italic;
+            border-left: 4px solid #d94f70;
+            position: relative;
+            z-index: 1;
+        }
+
+        .accompaniment-note i {
+            color: #d94f70;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: #d94f70;
+            font-size: 1rem;
+            margin-top: 20px;
+            width: 100%;
+            background: #fff9f9;
+            border-top: 2px solid #d94f70;
+        }
+
+        .footer-quote {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-style: italic;
+            color: #b73a5a;
+            letter-spacing: 0.5px;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .floral-divider {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .floral-divider::before,
+        .floral-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d94f70, transparent);
+        }
+
+        .floral-divider::before {
+            left: 0;
+        }
+
+        .floral-divider::after {
+            right: 0;
+        }
+
+        .floral-divider i {
+            font-size: 2.2rem;
+            color: #d94f70;
+            margin: 0 15px;
+            opacity: 0.7;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid #d94f70;
+            transition: transform 0.3s ease;
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-control i {
+            font-size: 1.5rem;
+            color: #d94f70;
+        }
+
+        .music-note {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #d94f70;
+            opacity: 0.7;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .soundcloud-player {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d94f70;
+            width: 300px;
+        }
+
+        .soundcloud-player iframe {
+            width: 100%;
+            height: 150px;
+        }
+
+        .soundcloud-player div {
+            display: none;
+        }
+
+        .couple-heart {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 30px;
+        }
+
+        .couple-heart img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #d94f70;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .heart-overlay {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background: #d94f70;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: heartbeat 1.5s infinite;
+            z-index: 10;
+            border: 2px solid #ffd700;
+        }
+
+        .heart-overlay i {
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        /* Primera imagen para móviles */
+        .main-image {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            object-fit: cover;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid #d94f70;
+        }
+
+        /* Estilos para imágenes responsivas */
+        .responsive-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            margin: 15px auto;
+            border-radius: 10px;
+            border: 1px solid #d94f70;
+        }
+
+        .parent-img-container {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 15px auto;
+        }
+
+        /* Efecto de fuegos artificiales chinos */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px;
+            animation: firework-animation 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.15);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.15);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-5deg);
+            }
+
+            75% {
+                transform: translateY(-15px) rotate(3deg);
+            }
+        }
+
+        @keyframes firework-animation {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        /* Mejoras para móviles */
+        @media (max-width: 768px) {
+            .couple-names {
+                font-size: 3.2rem;
+                margin-top: 20px;
+                line-height: 1.2;
+            }
+            
+            .couple-names::before,
+            .couple-names::after {
+                font-size: 1.8rem;
+                top: -20px;
+            }
+            
+            .couple-names::before {
+                left: 10px;
+            }
+            
+            .couple-names::after {
+                right: 10px;
+            }
+            
+            .wedding-date {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .section {
+                padding: 25px 15px;
+                margin: 20px 0;
+                border-radius: 15px;
+            }
+            
+            .section-title {
+                font-size: 2.0rem;
+                margin-bottom: 25px;
+            }
+            
+            .parents-section {
+                padding: 15px;
+            }
+            
+            .parent-group {
+                padding: 10px;
+            }
+            
+            .parent-title {
+                font-size: 1.2rem;
+            }
+            
+            .countdown {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .countdown-item {
+                margin: 10px 0;
+            }
+            
+            .countdown-item::after {
+                display: none;
+            }
+            
+            .countdown-number {
+                font-size: 2.2rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.9rem;
+            }
+            
+            .locations, .gift-options, .dress-rules {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .location-card, .gift-card {
+                max-width: 100%;
+                padding: 20px;
+            }
+            
+            .itinerary {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px 20px;
+            }
+            
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .app-image, .app-info {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .floral-divider i {
+                font-size: 1.8rem;
+                margin: 0 10px;
+            }
+            
+            .couple-heart {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .heart-overlay {
+                width: 60px;
+                height: 60px;
+                bottom: -15px;
+                right: -15px;
+            }
+            
+            .heart-overlay i {
+                font-size: 2rem;
+            }
+            
+            .rsvp-container {
+                padding: 25px 15px;
+            }
+            
+            .accompaniment-note {
+                padding: 10px;
+                margin: 20px auto;
+                font-size: 0.9rem;
+            }
+            
+            .footer-quote {
+                font-size: 1.2rem;
+            }
+            
+            .soundcloud-player {
+                bottom: 70px;
+                right: 10px;
+                left: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            .soundcloud-player iframe {
+                width: 100%;
+            }
+            
+            .envelope-wrapper {
+                height: 250px;
+            }
+            
+            .invitation-title {
+                font-size: 2.5rem;
+            }
+            
+            .invitation-subtitle {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .couple-names {
+                font-size: 2.5rem;
+            }
+            
+            .couple-names::before,
+            .couple-names::after {
+                font-size: 1.2rem;
+                top: -15px;
+            }
+            
+            .wedding-date {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .location-type, .gift-type {
+                font-size: 1.5rem;
+            }
+            
+            .event-time {
+                font-size: 1.5rem;
+            }
+            
+            .event-name {
+                font-size: 1.1rem;
+            }
+            
+            .hashtag {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+            }
+            
+            .event-code {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+            }
+            
+            .gift-details p, .app-description, .gallery-text, .rsvp-text {
+                font-size: 1rem;
+            }
+            
+            .highlight {
+                font-size: 1.1rem;
+            }
+            
+            .footer-quote {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Controles de audio -->
+    <div class="audio-control" id="audioControl">
+        <i class="fas fa-volume-up"></i>
+    </div>
+
+    <!-- Reproductor de SoundCloud -->
+    <div class="soundcloud-player" id="soundcloudPlayer">
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/125538368&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+    </div>
+
+    <!-- Sobre animado - Ocupa toda la pantalla -->
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope-wrapper">
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-seal">囍</div>
+                <div class="envelope-front">
+                    <div class="double-happiness">囍</div>
+                    <h2 class="invitation-title">Rosa Isela & Demian</h2>
+                    <p class="invitation-subtitle">Haz clic para abrir la invitación</p>
+                </div>
+                <div class="envelope-back">
+                    <div class="double-happiness">囍</div>
+                    <h2 class="invitation-title">¡Gracias!</h2>
+                    <p class="invitation-subtitle">Disfruta de nuestra invitación</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido de la invitación -->
+    <div class="container invitation-content" id="invitationContent">
+        <!-- Decoración de patrones chinos -->
+        <div class="chinese-pattern pattern-1"></div>
+        <div class="chinese-pattern pattern-2"></div>
+        <div class="chinese-pattern pattern-3"></div>
+        <div class="chinese-pattern pattern-4"></div>
+
+        <div class="header">
+            <h1 class="couple-names">Rosa Isela & Demian</h1>
+            <p class="wedding-date">5 · DICIEMBRE · 2026</p>
+            
+            <!-- Primera imagen para móviles -->
+            <img src="https://drive.google.com/thumbnail?id=1I0edBYgF9oQTedGADB5gDkPkzAhfqfkw" 
+                 class="main-image" 
+                 alt="Imagen principal de la boda">
+
+            <!-- Sección de Padres -->
+            <div class="parents-section">
+                <h2 class="section-title">Nuestras Familias</h2>
+                <div class="parents-grid">
+                    <div class="parent-group">
+                        <h3 class="parent-title">Padres del Novio</h3>
+                        <div class="parent-img-container">
+                            <img src="https://drive.google.com/thumbnail?id=1Uly5YJeg7ZjBaKQEoW8FenVTsl0c-6vH"
+                                class="responsive-image"
+                                alt="Familia del novio">
+                        </div>
+                        <p>Germán Roberto Piña Reyes</p>
+                        <p>Mónica Juárez Álvarez</p>
+                    </div>
+
+                    <div class="parent-group">
+                        <h3 class="parent-title">Padres de la Novia</h3>
+                        <div class="parent-img-container">
+                            <img src="https://drive.google.com/thumbnail?id=19Jy40Kv7NZIctYkLPE9wUibVfgF16e-I"
+                                class="responsive-image"
+                                alt="Familia de la novia">
+                        </div>
+                        <p>Francisco Bruno Santiago</p>
+                        <p>Gloria Sandoval Mendoza</p>
+                    </div>
+                    
+                    <div class="parent-group">
+                        <h3 class="parent-title">Padrinos de Velación</h3>
+                        <p>Javier Pozos</p>
+                        <p>Guadalupe Sandoval Mendoza</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Ceremonia & Recepción</h2>
+            <div class="locations">
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://drive.google.com/thumbnail?id=1wwCRBcin8dPIIslmt1FDyN8Un8_vdbYT"
+                            alt="Ceremonia religiosa en Basílica de los Remedios">
+                    </div>
+                    <h3 class="location-type">CEREMONIA</h3>
+                    <div class="location-details">
+                        <p>BASÍLICA DE LOS REMEDIOS</p>
+                        <p>C. Zaragoza 1, Los Remedios</p>
+                        <p>53400 Naucalpan de Juárez, Méx.</p>
+                        <p class="location-time">13:00 Hrs</p>
+                    </div>
+                    <a href="https://maps.app.goo.gl/1B6X8vYRR3fW3qhX6" target="_blank" class="btn">
+                        <i class="fas fa-map-marker-alt"></i> VER MAPA
+                    </a>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-image">
+                        <img src="https://drive.google.com/thumbnail?id=1tSdtpJGllFtoH9EE8qDhWSjL8IGXl3vY"
+                            alt="Salón de eventos">
+                    </div>
+                    <h3 class="location-type">RECEPCIÓN</h3>
+                    <div class="location-details">
+                        <p>PARAISO</p>
+                        <p>C. Colina Azul 8</p>
+                        <p>Loma Colorada Segunda Secc, 53420 Naucalpan de Juárez, Méx.</p>
+                        <p class="location-time">16:00 Hrs</p>
+                    </div>
+                    <a href="https://maps.app.goo.gl/f4dymrgqa8CVRWraA" target="_blank" class="btn">
+                        <i class="fas fa-map-marker-alt"></i> VER MAPA
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Itinerario</h2>
+            <div class="itinerary">
+                <div class="event-card">
+                    <div class="event-time">13:00 Hrs</div>
+                    <div class="event-name">CEREMONIA</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-time">16:00 Hrs</div>
+                    <div class="event-name">RECEPCIÓN</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-time">16:30 Hrs</div>
+                    <div class="event-name">CÓCTEL</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-time">17:00 Hrs</div>
+                    <div class="event-name">CENA</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-time">18:00 Hrs</div>
+                    <div class="event-name">BAILE</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-time">23:30 Hrs</div>
+                    <div class="event-name">FIN DEL EVENTO</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Mesa de Regalos</h2>
+            <div class="gift-section">
+                <p class="gift-text">
+                    Sin ti esto no sería posible. Nuestro mejor regalo es tu presencia, pero si tu deseo es hacernos un
+                    obsequio, estas son nuestras sugerencias:
+                </p>
+
+                <div class="gift-options">
+                    <div class="gift-card">
+                        <div class="gift-image">
+                            <img src="https://drive.google.com/thumbnail?id=1N_QnitTfJ-8LldiZWmuG2HRR7OqCZZL0"
+                                alt="Caja de regalo">
+                        </div>
+                        <h3 class="gift-type">LISTA DE REGALOS</h3>
+                        <div class="gift-details">
+                            <p>Puedes seleccionar un regalo de nuestra lista:</p>
+                            <a href="https://docs.google.com/spreadsheets/d/1zBFOzXFgvUJucycNebUTrEw_SaHoPINrLxSZE4yW5fM/edit?usp=sharing"
+                                target="_blank" class="btn" style="margin-top: 20px;">VER LISTA</a>
+                        </div>
+                    </div>
+
+                    <div class="gift-card">
+                        <div class="gift-image">
+                            <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop"
+                                alt="Transferencia bancaria">
+                        </div>
+                        <h3 class="gift-type">TRANSFERENCIA BANCARIA</h3>
+                        <div class="gift-details">
+                            <p>Cuenta BBVA:</p>
+                            <span class="highlight">154 127 1461</span>
+                            <p>CLABE:</p>
+                            <span class="highlight">012 180 01541271461 2</span>
+                            <p>A nombre de:</p>
+                            <span class="highlight">Demian Piña Juárez</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Vestimenta</h2>
+            <div class="dress-code">
+                <h3 class="dress-title">FORMAL</h3>
+
+                <div class="dress-rules">
+                    <div class="dress-rule">
+                        <div class="dress-image">
+                            <img src="https://drive.google.com/thumbnail?id=15CEISJXouUB-0IbUyXHQGc2yL0NP5Pi3"
+                                alt="Vestimenta para mujer">
+                        </div>
+                        <p>Blanco reservado para la novia</p>
+                    </div>
+                    <div class="dress-rule">
+                        <div class="dress-image">
+                            <img src="https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?q=80&w=1887&auto=format&fit=crop"
+                                alt="Vestimenta para hombre">
+                        </div>
+                        <p>Hombres traje</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Galería</h2>
+            <div class="gallery-section">
+                <div class="couple-heart">
+                    <img src="https://drive.google.com/thumbnail?id=1LZdLiUEmdM3_f0cikKohvDBwjDT2KXHb"
+                        alt="Foto de los novios">
+                    <div class="heart-overlay">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                </div>
+                <div class="gallery-content">
+                    <p class="gallery-text">
+                        En nuestra boda comparte tus fotos con nosotros, utiliza el hashtag:
+                    </p>
+                    <div class="hashtag">#bodarosydemi</div>
+
+                    <div class="dots-app">
+                        <h3 class="app-title">Dots Memories</h3>
+                        <div class="app-container">
+                            <div class="app-image">
+                                <img src="https://drive.google.com/thumbnail?id=19gpY48nhoiWbdgyXRMOTBh4m6f9dumM6"
+                                    alt="Código Dots Memories">
+                            </div>
+                            <div class="app-info">
+                                <p class="app-description">
+                                    Descarga la aplicación Dots Memories para conectar con nuestro evento y compartir tus fotos de manera privada.
+                                </p>
+                                <p>Usa este código para unirte:</p>
+                                <div class="event-code">xY29loPm</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="gallery-text">
+                        O sube tus fotos directamente a nuestra galería compartida:
+                    </p>
+                    
+                    <!-- Nueva imagen de previsualización de galería -->
+                    <div class="gallery-preview">
+                        <img src="https://drive.google.com/thumbnail?id=18WHFCfir244FUjRDaC1isuABMoFcRzGU" 
+                             alt="Previsualización de galería">
+                    </div>
+                    
+                    <a href="https://drive.google.com/drive/folders/1BtGByzr1I3lumcpxRDEmqPnj78dQu6o-?usp=sharing"
+                        target="_blank" class="btn gallery-btn">
+                        <i class="fas fa-images"></i> VER GALERÍA COMPLETA
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="floral-divider">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-ring"></i>
+            <i class="fas fa-heart"></i>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Confirmar Asistencia</h2>
+            <div class="rsvp-section">
+                <div class="rsvp-container">
+                    <p class="rsvp-text">
+                        Para confirmar tu asistencia a nuestra boda, por favor utiliza nuestro formulario oficial.
+                        Tu respuesta nos ayudará a planificar mejor nuestro día especial.
+                    </p>
+                    
+                    <div class="accompaniment-note">
+                        <i class="fas fa-heart"></i>
+                        <p>Recuerda: Si eres amigo, puedes llevar hasta un acompañante.</p>
+                    </div>
+                    
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeepk27e_2YBiWgc1sgKxeRgceMgeeKfVPulNwu6CimiX0G4w/viewform?usp=dialog"
+                        target="_blank" class="btn" style="width: 300px; padding: 16px; font-size: 1.2rem;">
+                        <i class="fas fa-check-circle"></i> CONFIRMAR ASISTENCIA
+                    </a>
+                    <p class="rsvp-text" style="margin-top: 30px;">
+                        Por favor, confirma tu asistencia antes del 15 de noviembre de 2026.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botón de administrador -->
+        <section class="section">
+            <h2 class="section-title">Administración</h2>
+            <div style="text-align:center;">
+                <input type="password" id="adminPassword" placeholder="Contraseña" style="padding:10px;border-radius:5px;border:1px solid #ccc;">
+                <button class="btn" onclick="checkPassword()">Acceder</button>
+                <p id="adminMessage" style="margin-top:15px;color:#d94f70;font-weight:bold;"></p>
+            </div>
+        </section>
+
+        <footer>
+            <p class="footer-quote">
+                "El amor es como el bambú: fuerte, flexible y que crece con el tiempo" - Proverbio chino
+            </p>
+            <p>¡Te esperamos en nuestro día especial!</p>
+            <p class="copyright">Hecho con ❤️ por Rosa Isela y Demian<br>© Copyright 2025. Todos los derechos reservados.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuración de la fecha de la boda (5 de diciembre de 2026 a las 13:00 horas, CDMX)
+        const weddingDate = new Date("December 5, 2026 13:00:00 GMT-06:00").getTime();
+
+        // Elementos DOM
+        const envelope = document.getElementById('envelope');
+        const envelopeContainer = document.getElementById('envelopeContainer');
+        const invitationContent = document.getElementById('invitationContent');
+        const audioControl = document.getElementById('audioControl');
+        const soundcloudPlayer = document.getElementById('soundcloudPlayer');
+
+        let audioPlaying = false;
+
+        // Función para crear fuegos artificiales chinos
+        function createChineseFireworks() {
+            const colors = ['#d94f70', '#ffd700', '#b73a5a', '#ff5500'];
+            const container = document.body;
+            
+            for (let i = 0; i < 30; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                
+                // Posición inicial aleatoria
+                const startX = Math.random() * window.innerWidth;
+                const startY = window.innerHeight + 50;
+                
+                // Posición final aleatoria
+                const endX = startX + (Math.random() * 200 - 100);
+                const endY = Math.random() * window.innerHeight / 2;
+                
+                firework.style.left = `${startX}px`;
+                firework.style.top = `${startY}px`;
+                firework.style.setProperty('--tx', `${endX - startX}px`);
+                firework.style.setProperty('--ty', `${endY - startY}px`);
+                firework.style.boxShadow = `0 0 10px 5px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                
+                container.appendChild(firework);
+                
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    firework.remove();
+                }, 2000);
+            }
+        }
+
+        // Cargar la canción inmediatamente
+        window.addEventListener('DOMContentLoaded', function () {
+            // Agregar notas musicales adicionales para indicar la música
+            for (let i = 0; i < 8; i++) {
+                const note = document.createElement('div');
+                note.className = 'music-note';
+                note.style.top = `${Math.random() * 100}%`;
+                note.style.left = `${Math.random() * 100}%`;
+                note.style.animationDelay = `${Math.random() * 5}s`;
+                note.innerHTML = '<i class="fas fa-music"></i>';
+                envelopeContainer.appendChild(note);
+            }
+        });
+
+        // Abrir el sobre
+        envelopeContainer.addEventListener('click', function () {
+            if (!envelope.classList.contains('open')) {
+                envelope.classList.add('open');
+
+                // Mostrar la invitación después de la animación
+                setTimeout(() => {
+                    invitationContent.classList.add('show');
+                    envelopeContainer.style.display = 'none';
+
+                    // Mostrar el reproductor de SoundCloud
+                    soundcloudPlayer.style.display = 'block';
+                    audioPlaying = true;
+                    audioControl.innerHTML = '<i class="fas fa-volume-up"></i>';
+
+                    // Habilitar desplazamiento
+                    document.body.style.overflow = 'auto';
+
+                    // Forzar reproducción de audio después de la interacción del usuario
+                    const iframe = soundcloudPlayer.querySelector('iframe');
+                    if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage('{"method":"play"}', '*');
+                    }
+                    
+                    // Efecto de fuegos artificiales chinos
+                    createChineseFireworks();
+                    setTimeout(createChineseFireworks, 500);
+                    setTimeout(createChineseFireworks, 1000);
+                }, 1500);
+            }
+        });
+
+        // Control de audio
+        audioControl.addEventListener('click', function () {
+            const iframe = soundcloudPlayer.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow) return;
+
+            if (audioPlaying) {
+                iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+                this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                iframe.contentWindow.postMessage('{"method":"play"}', '*');
+                this.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+            audioPlaying = !audioPlaying;
+        });
+
+        // Función para verificar contraseña de administrador
+        function checkPassword() {
+            const correctPassword = "miClave123"; // Cambia la contraseña aquí
+            const input = document.getElementById("adminPassword").value;
+            const message = document.getElementById("adminMessage");
+
+            if (input === correctPassword) {
+                message.style.color = "green";
+                message.textContent = "Acceso concedido. Iniciando descarga...";
+                window.location.href = "https://docs.google.com/spreadsheets/d/1FC_9H5DviND2dSeI7MQMEgypaQGRwwDut7eKUUV3udg/export?format=xlsx";
+            } else {
+                message.style.color = "#d94f70";
+                message.textContent = "No tienes acceso";
+            }
+        }
+
+        // Actualizar cuenta regresiva cada segundo
+        const countdownTimer = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            // Cálculos de tiempo
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Mostrar los resultados
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            // Si la cuenta regresiva termina
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.querySelector(".countdown").innerHTML = '<div class="countdown-item"><div class="countdown-number">¡La boda ha comenzado!</div></div>';
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
